@@ -4,6 +4,7 @@ import com.just.commitoudesiste.commitoudesiste_backend.model.Usuario;
 import com.just.commitoudesiste.commitoudesiste_backend.repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -15,15 +16,19 @@ public class UsuarioService {
         this.usuarioRepository = usuarioRepository;
     }
 
+    public List<Usuario> buscarTodos() {
+        return usuarioRepository.findAll();
+    }
+
     public Optional<Usuario> buscarPorId(Long id) {
         return usuarioRepository.findById(id);
     }
 
-    public Optional<Usuario> buscarPorCpfCnpj(String cpfCnpj) {
-        return usuarioRepository.findByCpfCnpj(cpfCnpj);
-    }
-
     public Usuario salvar(Usuario usuario) {
         return usuarioRepository.save(usuario);
+    }
+
+    public void deletar(Long id) {
+        usuarioRepository.deleteById(id);
     }
 }
