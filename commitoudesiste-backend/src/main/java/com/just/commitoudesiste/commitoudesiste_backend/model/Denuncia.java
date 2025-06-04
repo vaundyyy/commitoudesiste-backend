@@ -32,7 +32,7 @@ public class Denuncia {
     @Column(name = "data_ocorrencia", nullable = false)
     private LocalDateTime dataOcorrencia;
 
-    @ManyToOne
+    /*@ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
-    private Usuario usuario;
+    private Usuario usuario;*/
 }

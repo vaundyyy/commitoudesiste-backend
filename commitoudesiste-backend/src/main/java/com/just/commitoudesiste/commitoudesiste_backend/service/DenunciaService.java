@@ -47,7 +47,6 @@ public class DenunciaService {
         Denuncia denuncia = Denuncia.builder()
                 .transacao(transacaoOpt.get())
                 .motivo(motivoOpt.get())
-                .usuario(usuarioOpt.get())
                 .observacao(observacao)
                 .dataOcorrencia(LocalDateTime.now())
                 .build();
