@@ -2,13 +2,16 @@ package com.just.commitoudesiste.commitoudesiste_backend.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "denuncias")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Denuncia {
 
     @Id
@@ -23,9 +26,13 @@ public class Denuncia {
     @JoinColumn(name = "motivo_id", nullable = false)
     private MotivoDenuncia motivo;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(name = "observacao")
     private String observacao;
 
     @Column(name = "data_ocorrencia", nullable = false)
     private LocalDateTime dataOcorrencia;
+
+    @ManyToOne
+    @JoinColumn(name = "usuario_id", nullable = false)
+    private Usuario usuario;
 }
