@@ -2,6 +2,7 @@ package com.just.commitoudesiste.commitoudesiste_backend.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -26,7 +27,8 @@ public class Usuario {
     @Enumerated(EnumType.STRING)
     private TipoUsuario tipo;
 
-    @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    @PrimaryKeyJoinColumn
     private ScoreConfianca scoreConfianca;
 
     public enum TipoUsuario {

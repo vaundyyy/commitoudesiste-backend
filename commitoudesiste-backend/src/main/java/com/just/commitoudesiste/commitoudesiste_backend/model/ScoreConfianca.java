@@ -2,6 +2,7 @@ package com.just.commitoudesiste.commitoudesiste_backend.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -16,11 +17,11 @@ public class ScoreConfianca {
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "usuario_id", nullable = false)
+    @JoinColumn(name = "usuario_id", nullable = false, unique = true)
     private Usuario usuario;
 
     @Column(nullable = false)
-    private Integer score;
+    private int score;
 
     @Column(name = "ultima_atualizacao", nullable = false)
     private LocalDateTime ultimaAtualizacao;

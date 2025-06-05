@@ -25,6 +25,20 @@ public class ScoreConfiancaController {
         this.usuarioService = usuarioService;
     }
 
+    @GetMapping
+    public ResponseEntity<?> buscarScorePorUsuario(@RequestParam Long usuarioId) {
+        return usuarioService.buscarPorId(usuarioId)
+                .map(usuario -> {
+                    Optional<ScoreConfianca> scoreOpt = scoreService.buscarPorUsuario(usuario);
+                    if (scoreOpt.isPresent()) {
+                        return ResponseEntity.ok(scoreOpt.get());
+                    } else {
+                        return ResponseEntity.notFound().build();
+                    }
+                })
+                .orElseGet(() -> ResponseEntity.badRequest().body("Usuário não encontrado"));
+    }
+
     @PutMapping("/atualizar")
     public ResponseEntity<?> atualizarScore(@RequestParam Long usuarioId, @RequestParam int novoScore) {
         if (novoScore < 0 || novoScore > 100) {
