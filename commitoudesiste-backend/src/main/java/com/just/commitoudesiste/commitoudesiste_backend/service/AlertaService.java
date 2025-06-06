@@ -32,10 +32,10 @@ public class AlertaService {
 
         try {
             AlertaSuspeito alertaSalvo = alertaRepo.save(alerta);
-            logger.info("✅ Alerta gerado com sucesso: {}", alertaSalvo);
+            logger.info("Alerta gerado com sucesso: {}", alertaSalvo);
             return alertaSalvo;
         } catch (Exception e) {
-            logger.error("❌ Erro ao salvar alerta: {}", e.getMessage(), e);
+            logger.error("Erro ao salvar alerta: {}", e.getMessage(), e);
             throw new RuntimeException("Erro ao salvar alerta", e);
         }
     }

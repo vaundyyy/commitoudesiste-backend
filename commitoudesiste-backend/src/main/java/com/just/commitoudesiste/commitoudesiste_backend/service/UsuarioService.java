@@ -24,6 +24,10 @@ public class UsuarioService {
         return usuarioRepository.findById(id);
     }
 
+    public Optional<Usuario> buscarPorCpfCnpj(String cpfCnpj) {
+        return usuarioRepository.findByCpfCnpj(cpfCnpj);
+    }
+
     public Usuario salvar(Usuario usuario) {
         return usuarioRepository.save(usuario);
     }

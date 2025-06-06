@@ -73,6 +73,28 @@ public class UsuarioController {
         }
     }
 
+    @GetMapping("/buscar-por-cpf-cnpj")
+    public ResponseEntity<?> buscarPorCpfCnpj(@RequestParam String cpfCnpj) {
+        if (cpfCnpj == null || cpfCnpj.isEmpty()) {
+            logger.warn("[USUÁRIO] CPF/CNPJ inválido ao buscar");
+            return ResponseEntity.badRequest().body("CPF/CNPJ é obrigatório");
+        }
+
+        try {
+            Optional<Usuario> usuario = usuarioService.buscarPorCpfCnpj(cpfCnpj);
+            if (usuario.isPresent()) {
+                logger.info("[USUÁRIO] Encontrado por CPF/CNPJ: {}", usuario.get());
+                return ResponseEntity.ok(usuario.get());
+            } else {
+                logger.warn("[USUÁRIO] Não encontrado com CPF/CNPJ: {}", cpfCnpj);
+                return ResponseEntity.status(404).body("Usuário não encontrado");
+            }
+        } catch (Exception e) {
+            logger.error("[USUÁRIO] Erro ao buscar por CPF/CNPJ: {}", e.getMessage(), e);
+            return ResponseEntity.status(500).body("Erro ao buscar usuário: " + e.getMessage());
+        }
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<?> atualizarUsuario(@PathVariable Long id, @RequestBody Usuario atualizado) {
         if (id <= 0) {

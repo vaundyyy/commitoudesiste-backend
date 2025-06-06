@@ -2,13 +2,18 @@ package com.just.commitoudesiste.commitoudesiste_backend.service;
 
 import com.just.commitoudesiste.commitoudesiste_backend.model.*;
 import com.just.commitoudesiste.commitoudesiste_backend.repository.TransacaoRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class TransacaoService {
+
+    private static final Logger logger = LoggerFactory.getLogger(TransacaoService.class);
 
     private final TransacaoRepository transacaoRepo;
     private final UsuarioService usuarioService;
@@ -43,6 +48,18 @@ public class TransacaoService {
         return transacaoSalva;
     }
 
+    public List<Transacao> buscarPorDestinatario(Long destinatarioId) {
+        return transacaoRepo.findByDestinatarioId(destinatarioId);
+    }
+
+    public List<Transacao> buscarPorRemetente(Long remetenteId) {
+        return transacaoRepo.findByRemetenteId(remetenteId);
+    }
+
+    public List<Transacao> buscarPorPeriodo(LocalDateTime inicio, LocalDateTime fim) {
+        return transacaoRepo.findByDataHoraBetween(inicio, fim);
+    }
+
     private void aplicarRegrasAntifraude(Transacao transacao, Usuario destinatario) {
         ScoreConfianca scoreConfianca = destinatario.getScoreConfianca();
 
@@ -70,7 +87,8 @@ public class TransacaoService {
         }
 
         if (isSuspeito) {
-            alertaService.gerarAlerta(transacao, alertaMsg.toString().trim());
+            AlertaSuspeito alerta = alertaService.gerarAlerta(transacao, alertaMsg.toString().trim());
+            logger.info("Alerta gerado e processado: {}", alerta);
         }
     }
 }

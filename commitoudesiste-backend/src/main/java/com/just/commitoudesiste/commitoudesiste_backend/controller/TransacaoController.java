@@ -7,6 +7,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/transacoes")
 public class TransacaoController {
@@ -34,5 +37,28 @@ public class TransacaoController {
             logger.error("❌ Erro ao registrar transação: {}", e.getMessage(), e);
             return ResponseEntity.badRequest().body("Erro ao registrar transação: " + e.getMessage());
         }
+    }
+
+    @GetMapping("/destinatario/{id}")
+    public ResponseEntity<List<Transacao>> buscarPorDestinatario(@PathVariable Long id) {
+        logger.info("🔍 Buscando transações para o destinatário com ID: {}", id);
+        List<Transacao> transacoes = transacaoService.buscarPorDestinatario(id);
+        return ResponseEntity.ok(transacoes);
+    }
+
+    @GetMapping("/remetente/{id}")
+    public ResponseEntity<List<Transacao>> buscarPorRemetente(@PathVariable Long id) {
+        logger.info("🔍 Buscando transações para o remetente com ID: {}", id);
+        List<Transacao> transacoes = transacaoService.buscarPorRemetente(id);
+        return ResponseEntity.ok(transacoes);
+    }
+
+    @GetMapping("/periodo")
+    public ResponseEntity<List<Transacao>> buscarPorPeriodo(
+            @RequestParam LocalDateTime inicio,
+            @RequestParam LocalDateTime fim) {
+        logger.info("🔍 Buscando transações no período de {} a {}", inicio, fim);
+        List<Transacao> transacoes = transacaoService.buscarPorPeriodo(inicio, fim);
+        return ResponseEntity.ok(transacoes);
     }
 }
